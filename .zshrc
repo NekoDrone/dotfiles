@@ -114,5 +114,6 @@ if [[ "$LC_TERMINAL" == "iTerm2" ]]; then
     test -e /Users/USERNAME/.iterm2_shell_integration.zsh && source /Users/USERNAME/.iterm2_shell_integration.zsh || true
 fi
 
-alias nvc="cd ~/.config/nvim/ && nvim init.lua"
-alias nv="nvim ."
+alias nvc='cd ~/.config/nvim/ && nvim init.lua'
+alias nv='nvim .'
+alias lg='lazygit'
