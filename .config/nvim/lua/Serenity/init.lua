@@ -20,4 +20,4 @@ function EscapeInsert()
     end
 end
 vim.keymap.set("i", "<Esc>", "<Esc>:lua EscapeInsert()<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>Q", "<cmd>Telescope find_files<cr>")
+vim.keymap.set("n", "<leader>Q", "<cmd>Telescope git_files<cr>")

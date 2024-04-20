@@ -84,6 +84,7 @@ local plugins = {
     },
     'm4xshen/autoclose.nvim',
     'NvChad/nvim-colorizer.lua',
+    'voldikss/vim-floaterm',
 }
 
 -- lazy.nvim options
@@ -173,7 +174,55 @@ require("autoclose").setup()
 
 
 -- LSP settings
+
+-- navic
 local navic = require("nvim-navic")
+
+navic.setup {
+    icons = {
+        File          = "󰈙 ",
+        Module        = " ",
+        Namespace     = "󰌗 ",
+        Package       = " ",
+        Class         = "󰌗 ",
+        Method        = "󰆧 ",
+        Property      = " ",
+        Field         = " ",
+        Constructor   = " ",
+        Enum          = "󰕘",
+        Interface     = "󰕘",
+        Function      = "󰊕 ",
+        Variable      = "󰆧 ",
+        Constant      = "󰏿 ",
+        String        = "󰀬 ",
+        Number        = "󰎠 ",
+        Boolean       = "◩ ",
+        Array         = "󰅪 ",
+        Object        = "󰅩 ",
+        Key           = "󰌋 ",
+        Null          = "󰟢 ",
+        EnumMember    = " ",
+        Struct        = "󰌗 ",
+        Event         = " ",
+        Operator      = "󰆕 ",
+        TypeParameter = "󰊄 ",
+    },
+    lsp = {
+        auto_attach = true,
+        preference = nil,
+    },
+    highlight = false,
+    separator = " > ",
+    depth_limit = 0,
+    depth_limit_indicator = "..",
+    safe_output = true,
+    lazy_update_context = false,
+    click = false,
+    format_text = function(text)
+        return text
+    end,
+}
+
 
 -- lua
 require'lspconfig'.lua_ls.setup {
@@ -203,9 +252,6 @@ require'lspconfig'.lua_ls.setup {
       }
     })
   end,
-  on_attach = function(client, bufnr)
-      navic.attach(client, bufnr)
-  end,
   settings = {
     Lua = {}
   },
@@ -214,9 +260,6 @@ require'lspconfig'.lua_ls.setup {
 
 -- TypeScript
 require("typescript-tools").setup {
-    on_attach = function(client, bufnr)
-        navic.attach(client, bufnr)
-    end,
     settings = {
         jsx_close_tag = {
             enable = true,
@@ -304,46 +347,3 @@ ctp_feline.setup({
         lsp = {
             progress = true, -- if true the status bar will display an lsp progress indicator
             name = false, -- if true the status bar will display the lsp servers name, otherwise it will display the text "Lsp"
-            exclude_lsp_names = {}, -- lsp server names that should not be displayed when name is set to true
-            separator = "|", -- the separator used when there are multiple lsp servers
-        },
-    }
-})
-
-require('feline').setup({
-    components = ctp_feline.get(),
-})
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "*",
-    callback = function()
-        package.loaded["feline"] = nil
-        package.loaded["catppuccin.groups.integrations.feline"] = nil
-        require("feline").setup {
-            components = require("catppuccin.groups.integrations.feline").get(),
-        }
-    end,
-})
-
-
--- colorizer settings
-require'colorizer'.setup()
-
--- nvim editor options
--- use vim.g.{variable} = something to replicate the behaviour of let {variable} = something
--- use vim.opt.{variable} = something to replicate the behaviour of set {variable} = something
--- when using vim.opt, if the flag is a boolean, you must explicitly set it to true or false.
-
--- show line numbers in a file
-vim.opt.number = true
-
--- show tabline at the top
-vim.opt.showtabline = 2
-
--- 4 tab spacing
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-
--- sets termguicolors
-vim.opt.termguicolors = true
