@@ -35,3 +35,7 @@ I'm too lazy to keep the plugin list up-to-date, so please refer to the `lazy-lo
 Uses Catppuccin Mocha as the base theme, and integrates it as much as I'm willing to at any given moment.
 
 Happy coding!
+
+## Troubleshooting
+
+1. For lazygit in floaterm, if you did not set Catppuccin Mocha correctly, it will appear really ugly (default lazygit theme). To fix this, see [here](https://github.com/catppuccin/lazygit)
