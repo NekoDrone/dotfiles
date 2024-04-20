@@ -1,21 +1,21 @@
 require("Serenity")
-print("Welcome back Syl :D")
+print("Setting up plugins...")
 
--- disables netrw for nvim-tree
+-- disables netrw for nvim-treie
 vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+  vim.g.loaded_netrwPlugin = 1
 
 -- lazy.nvim installation
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -58,33 +58,33 @@ local plugins = {
                 min_length = nil, -- only conceal classes exceeding the provided length
                 symbol = "󱏿", -- only a single character is allowed
                 highlight = { -- extmark highlight options, see :h 'highlight'
-                    fg = "#38BDF8",
-                },
+                fg = "#38BDF8",
             },
-            custom_filetypes = {} -- see the extension section to learn how it works
-        } -- your configuration
-    },
-    { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-    { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
-    {
-        "nvim-tree/nvim-tree.lua",
-	    version = "*",
-	    lazy = false,
-	    dependencies = {
-            "nvim-tree/nvim-web-devicons",
         },
-        config = function()
-            require("nvim-tree").setup {}
-        end,
+        custom_filetypes = {} -- see the extension section to learn how it works
+    } -- your configuration
+},
+{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+{ 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+{
+    "nvim-tree/nvim-tree.lua",
+    version = "*",
+    lazy = false,
+    dependencies = {
+        "nvim-tree/nvim-web-devicons",
     },
-    'feline-nvim/feline.nvim',
-    {
-        "SmiteshP/nvim-navic",
-        dependencies = { "neovim/nvim-lspconfig" },
-    },
-    'm4xshen/autoclose.nvim',
-    'NvChad/nvim-colorizer.lua',
-    'voldikss/vim-floaterm',
+    config = function()
+        require("nvim-tree").setup {}
+    end,
+},
+'feline-nvim/feline.nvim',
+{
+    "SmiteshP/nvim-navic",
+    dependencies = { "neovim/nvim-lspconfig" },
+},
+'m4xshen/autoclose.nvim',
+'NvChad/nvim-colorizer.lua',
+'voldikss/vim-floaterm',
 }
 
 -- lazy.nvim options
@@ -113,61 +113,61 @@ require('gitsigns').setup()
 -- Autocompletion settings
 local cmp = require'cmp'
 
-  cmp.setup({
+cmp.setup({
     snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-      end,
+        -- REQUIRED - you must specify a snippet engine
+        expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        end,
     },
     window = {
-      completion = cmp.config.window.bordered(),
+        completion = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' },
+        { name = 'nvim_lsp' },
+        { name = 'vsnip' },
     },
     {
-      { name = 'buffer' },
+        { name = 'buffer' },
     })
-  })
+})
 
-  -- Set configuration for specific filetype.
-  cmp.setup.filetype('gitcommit', {
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
-      { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+        { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
     }, {
-      { name = 'buffer' },
+        { name = 'buffer' },
     })
-  })
+})
 
-  -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline({ '/', '?' }, {
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-      { name = 'buffer' }
+        { name = 'buffer' }
     }
-  })
+})
 
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-      { name = 'path' }
+        { name = 'path' }
     }, {
-      { name = 'cmdline' }
+        { name = 'cmdline' }
     }),
     matching = { disallow_symbol_nonprefix_matching = false }
-  })
-  -- Set up lspconfig.
-  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+})
+-- Set up lspconfig.
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- auto closing braces
 require("autoclose").setup()
@@ -226,36 +226,36 @@ navic.setup {
 
 -- lua
 require'lspconfig'.lua_ls.setup {
-  on_init = function(client)
-    local path = client.workspace_folders[1].name
-    if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
-      return
-    end
+    on_init = function(client)
+        local path = client.workspace_folders[1].name
+        if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
+            return
+        end
 
-    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-      runtime = {
-        -- Tell the language server which version of Lua you're using
-        -- (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT'
-      },
-      -- Make the server aware of Neovim runtime files
-      workspace = {
-        checkThirdParty = false,
-        library = {
-          vim.env.VIMRUNTIME
-          -- Depending on the usage, you might want to add additional paths here.
-          -- "${3rd}/luv/library"
-          -- "${3rd}/busted/library",
-        }
-        -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-        -- library = vim.api.nvim_get_runtime_file("", true)
-      }
-    })
-  end,
-  settings = {
-    Lua = {}
-  },
-  capabilities = capabilities
+        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+            runtime = {
+                -- Tell the language server which version of Lua you're using
+                -- (most likely LuaJIT in the case of Neovim)
+                version = 'LuaJIT'
+            },
+            -- Make the server aware of Neovim runtime files
+            workspace = {
+                checkThirdParty = false,
+                library = {
+                    vim.env.VIMRUNTIME
+                    -- Depending on the usage, you might want to add additional paths here.
+                    -- "${3rd}/luv/library"
+                    -- "${3rd}/busted/library",
+                }
+                -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+                -- library = vim.api.nvim_get_runtime_file("", true)
+            }
+        })
+    end,
+    settings = {
+        Lua = {}
+    },
+    capabilities = capabilities
 }
 
 -- TypeScript
@@ -275,13 +275,13 @@ require'lspconfig'.tailwindcss.setup{}
 -- Telescope settings
 local actions = require("telescope.actions")
 require("telescope").setup{
-  defaults = {
-    mappings = {
-      i = {
-        ["<esc>"] = actions.close
-      },
-    },
-  }
+    defaults = {
+        mappings = {
+            i = {
+                ["<esc>"] = actions.close
+            },
+        },
+    }
 }
 
 -- feline bar settings
@@ -347,3 +347,160 @@ ctp_feline.setup({
         lsp = {
             progress = true, -- if true the status bar will display an lsp progress indicator
             name = false, -- if true the status bar will display the lsp servers name, otherwise it will display the text "Lsp"
+            exclude_lsp_names = {}, -- lsp server names that should not be displayed when name is set to true
+            separator = "|", -- the separator used when there are multiple lsp servers
+        },
+    }
+})
+
+require('feline').setup({
+    components = ctp_feline.get(),
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    callback = function()
+        package.loaded["feline"] = nil
+        package.loaded["catppuccin.groups.integrations.feline"] = nil
+        require("feline").setup {
+            components = require("catppuccin.groups.integrations.feline").get(),
+        }
+    end,
+})
+
+
+-- colorizer settings
+require'colorizer'.setup()
+
+-- nvim editor options
+-- use vim.g.{variable} = something to replicate the behaviour of let {variable} = something
+-- use vim.opt.{variable} = something to replicate the behaviour of set {variable} = something
+-- when using vim.opt, if the flag is a boolean, you must explicitly set it to true or false.
+
+-- show line numbers in a file
+vim.opt.number = true
+
+-- show tabline at the top
+vim.opt.showtabline = 2
+
+-- 4 tab spacing
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
+-- sets termguicolors
+vim.opt.termguicolors = true
+
+
+-- Ending line. DO NOTE MOVE.
+
+-- print("\n\n\n 󰄛󰄛󰄛󰄛󰄛󰄛󰄛󰄛󰄛\027[0m Welcome back Syl! 󰄛󰄛󰄛󰄛󰄛󰄛󰄛󰄛󰄛\027[0m")
+-- print("\n\n\027[0m You are loved \027[0m\n\027[0m You are cherished \027[0m\n\027[0m You are deserving \027[0m\n󰄛\027[0m You are adorable!!! 󰄛\027[0m\n\n")
+-- print("\027[0m Have an incredible and amazing day :) \027[0m\n\n")
+
+-- highlight group color conversions
+local highlightClrs = {
+    white = "Normal",
+    red = "Error",
+    green = "String",
+    blue = "Function",
+    yellow = "Type",
+    pink = "Special",
+    purple = "Keyword",
+    lavender = "CursorLineNr",
+    sapphire = "Label",
+}
+
+local heartSym = ""
+local catSym = "󰄛"
+local sparkleSym = ""
+local newline = "\n"
+
+local doneTxt = "Done!"
+local welcomeTxt = " Welcome back Syl! "
+local youAreTxt = " You are "
+local loveTxt = "loved "
+local cherishTxt = "cherished "
+local deserveTxt = "deserving "
+local adorbsTxt = "adorable!!! "
+local closingTxt = " Have an incredible and amazing day :) "
+
+local attributes = {
+    { doneTxt, highlightClrs.green },
+    { newline, highlightClrs.white },
+    { newline, highlightClrs.white },
+    { newline, highlightClrs.white },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { welcomeTxt, highlightClrs.purple },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { heartSym, highlightClrs.sapphire },
+    { newline, highlightClrs.white },
+    { newline, highlightClrs.white },
+    { heartSym, highlightClrs.lavender },
+    { youAreTxt, highlightClrs.yellow },
+    { loveTxt, highlightClrs.pink },
+    { heartSym, highlightClrs.lavender },
+    { newline, highlightClrs.white },
+    { heartSym, highlightClrs.lavender },
+    { youAreTxt, highlightClrs.yellow },
+    { cherishTxt, highlightClrs.purple },
+    { heartSym, highlightClrs.lavender },
+    { newline, highlightClrs.white },
+    { heartSym, highlightClrs.lavender },
+    { youAreTxt, highlightClrs.yellow },
+    { deserveTxt, highlightClrs.blue },
+    { heartSym, highlightClrs.lavender },
+    { newline, highlightClrs.white },
+    { catSym, highlightClrs.pink },
+    { youAreTxt, highlightClrs.yellow },
+    { adorbsTxt, highlightClrs.sapphire },
+    { catSym, highlightClrs.pink },
+    { newline, highlightClrs.white },
+    { newline, highlightClrs.white },
+    { sparkleSym, highlightClrs.yellow },
+    { closingTxt, highlightClrs.purple },
+    { sparkleSym, highlightClrs.yellow },
+    { newline, highlightClrs.white },
+    { newline, highlightClrs.white },
+    { newline, highlightClrs.white },
+    { newline, highlightClrs.white },
+
+
+}
+
+vim.api.nvim_echo(attributes, true, {})

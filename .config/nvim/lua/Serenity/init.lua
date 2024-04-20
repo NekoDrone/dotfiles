@@ -15,9 +15,9 @@ vim.keymap.set("n", "<C-,>", function() vim.cmd.tabnext("-") end)
 function EscapeInsert()
     local buftype = vim.bo.buftype
     if buftype == "" then
-     vim.cmd.w()
-     vim.cmd.stopinsert()
+        vim.cmd.w()
+        vim.cmd.stopinsert()
     end
 end
-vim.keymap.set("i", "<Esc>", "<Esc>:lua EscapeInsert()<CR>", { noremap = true, silent = true })
+vim.keymap.set("i", "<Esc>", "<Esc>:lua EscapeInsert()<CR>gg=G<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>Q", "<cmd>Telescope git_files<cr>")
