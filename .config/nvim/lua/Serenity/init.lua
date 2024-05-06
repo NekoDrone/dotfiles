@@ -8,7 +8,7 @@ end
 
 vim.g.mapleader = "Q"
 vim.keymap.set("n", "<leader>x", vim.cmd.Ex)
-vim.keymap.set("n", "<leader>t", newTab)
+vim.keymap.set("n", "<leader>T", newTab)
 vim.keymap.set("n", "<C-.>", vim.cmd.tabnext)
 vim.keymap.set("n", "<C-,>", function() vim.cmd.tabnext("-") end)
 
@@ -19,5 +19,7 @@ function EscapeInsert()
         vim.cmd.stopinsert()
     end
 end
-vim.keymap.set("i", "<Esc>", "<Esc>:lua EscapeInsert()<CR>gg=G<CR>", { noremap = true, silent = true })
+vim.keymap.set("i", "<Esc>", "<Esc>:lua EscapeInsert()<CR>:Prettier<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>Q", "<cmd>Telescope git_files<cr>")
+vim.keymap.set("n", "<leader>G", ":FloatermNew --autoclose=1 lazygit<CR>")
+vim.keymap.set("n", "<leader>R", "Telescope lsp_definitions<CR>")
