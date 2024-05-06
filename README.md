@@ -39,3 +39,5 @@ Happy coding!
 ## Troubleshooting
 
 1. For lazygit in floaterm, if you did not set Catppuccin Mocha correctly, it will appear really ugly (default lazygit theme). To fix this, see [here](https://github.com/catppuccin/lazygit)
+2. Remember to install your LSPs accordingly.
+3. Additionally, remember to install prettier and ensure that it's configured to run globally. `npm i -g pretteir` will do the trick.
