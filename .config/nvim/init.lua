@@ -3,7 +3,7 @@ print("Setting up plugins...")
 
 -- disables netrw for nvim-treie
 vim.g.loaded_netrw = 1
-  vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- lazy.nvim installation
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -52,39 +52,41 @@ local plugins = {
                 kind = "background", -- "inline" | "foreground" | "background"
                 inline_symbol = "󰝤 ", -- only used in inline mode
                 debounce = 200, -- in milliseconds, only applied in insert mode
-            },
+                },
             conceal = {
                 enabled = false, -- can be toggled by commands
                 min_length = nil, -- only conceal classes exceeding the provided length
                 symbol = "󱏿", -- only a single character is allowed
                 highlight = { -- extmark highlight options, see :h 'highlight'
                 fg = "#38BDF8",
+                },
             },
-        },
         custom_filetypes = {} -- see the extension section to learn how it works
-    } -- your configuration
-},
-{ 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-{ 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
-{
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
-    lazy = false,
-    dependencies = {
-        "nvim-tree/nvim-web-devicons",
+        } -- your configuration
     },
-    config = function()
-        require("nvim-tree").setup {}
-    end,
-},
-'feline-nvim/feline.nvim',
-{
-    "SmiteshP/nvim-navic",
-    dependencies = { "neovim/nvim-lspconfig" },
-},
-'m4xshen/autoclose.nvim',
-'NvChad/nvim-colorizer.lua',
-'voldikss/vim-floaterm',
+    { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        lazy = false,
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            require("nvim-tree").setup {}
+        end,
+    },
+    'feline-nvim/feline.nvim',
+    {
+        "SmiteshP/nvim-navic",
+        dependencies = { "neovim/nvim-lspconfig" },
+    },
+    'm4xshen/autoclose.nvim',
+    'NvChad/nvim-colorizer.lua',
+    'voldikss/vim-floaterm',
+    'jose-elias-alvarez/null-ls.nvim',
+    'MunifTanjim/prettier.nvim',
 }
 
 -- lazy.nvim options
@@ -166,12 +168,46 @@ cmp.setup.cmdline(':', {
     }),
     matching = { disallow_symbol_nonprefix_matching = false }
 })
+
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- auto closing braces
 require("autoclose").setup()
 
+-- null-ls setup
+local null_ls = require("null-ls")
+
+local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+local event = "BufWritePre" -- or "BufWritePost"
+local async = event == "BufWritePost"
+
+null_ls.setup({
+    on_attach = function(client, bufnr)
+        if client.supports_method("textDocument/formatting") then
+            vim.keymap.set("n", "<Leader>f", function()
+                vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+            end, { buffer = bufnr, desc = "[lsp] format" })
+
+            -- format on save
+            vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+            vim.api.nvim_create_autocmd(event, {
+                buffer = bufnr,
+                group = group,
+                callback = function()
+                    vim.lsp.buf.format({ bufnr = bufnr, async = async })
+                end,
+                desc = "[lsp] format on save",
+            })
+        end
+
+        if client.supports_method("textDocument/rangeFormatting") then
+            vim.keymap.set("x", "<Leader>f", function()
+                vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+            end, { buffer = bufnr, desc = "[lsp] format" })
+        end
+    end,
+})
 
 -- LSP settings
 
@@ -272,6 +308,27 @@ require("typescript-tools").setup {
 -- Tailwind CSS
 require'lspconfig'.tailwindcss.setup{}
 
+-- Prettier setup
+local prettier = require("prettier")
+
+prettier.setup({
+    bin = 'prettier', -- or `'prettierd'` (v0.23.3+)
+    filetypes = {
+        "css",
+        "graphql",
+        "html",
+        "javascript",
+        "javascriptreact",
+        "json",
+        "less",
+        "markdown",
+        "scss",
+        "typescript",
+        "typescriptreact",
+        "yaml",
+    },
+})
+
 -- Telescope settings
 local actions = require("telescope.actions")
 require("telescope").setup{
@@ -294,7 +351,7 @@ ctp_feline.setup({
     assets = {
         left_separator = "",
         right_separator = "",
-        mode_icon = "",
+        mode_icon = "󱩡",
         dir = "󰉖",
         file = "󰈙",
         lsp = {
@@ -412,7 +469,7 @@ local highlightClrs = {
 }
 
 local heartSym = ""
-local catSym = "󰄛"
+local catSym = "󱩡"
 local sparkleSym = ""
 local newline = "\n"
 
